@@ -4,7 +4,7 @@ import { definePreset } from "./base";
 export const phosphor = definePreset({
   id: "phosphor",
   name: "Phosphor",
-  description: "CRT green, monospace everything, scanlines on.",
+  description: "CRT green, hard corners, scanlines on.",
   defaultMode: "dark",
   colors: {
     dark: {
@@ -51,8 +51,8 @@ export const phosphor = definePreset({
     },
   },
   typography: {
-    display: "jetbrains-mono",
-    body: "jetbrains-mono",
+    display: "dm-sans",
+    body: "dm-sans",
     mono: "jetbrains-mono",
     baseSize: 15,
     scaleRatio: 1.2,

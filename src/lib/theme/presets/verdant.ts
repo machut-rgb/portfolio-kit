@@ -51,8 +51,8 @@ export const verdant = definePreset({
     },
   },
   typography: {
-    display: "work-sans",
-    body: "inter",
+    display: "dm-sans",
+    body: "dm-sans",
     mono: "ibm-plex-mono",
     baseSize: 16,
     scaleRatio: 1.24,

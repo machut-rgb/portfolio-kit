@@ -112,8 +112,8 @@ forks of this repo can look nothing alike.
 | `terminal` | Amber and teal on near-black. Engineering console. |
 | `blueprint` | Drafting paper, ink-blue rules, redline annotations. |
 | `signal` | White space, black type, one electric blue. |
-| `dusk` | Serif headlines, plum shadows, soft gold. Editorial. |
-| `phosphor` | CRT green, monospace everything, scanlines. |
+| `dusk` | Plum shadows, soft gold. Editorial. |
+| `phosphor` | CRT green, hard corners, scanlines. |
 | `verdant` | Forest green and sand, raised cards, generous curves. |
 
 - **Theme Studio** (palette icon, public nav) edits colours, fonts, radius,

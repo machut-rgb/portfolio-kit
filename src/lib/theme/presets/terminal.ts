@@ -51,7 +51,7 @@ export const terminal = definePreset({
     },
   },
   typography: {
-    display: "syne",
+    display: "dm-sans",
     body: "dm-sans",
     mono: "jetbrains-mono",
     baseSize: 16,

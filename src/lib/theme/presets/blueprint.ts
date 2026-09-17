@@ -51,8 +51,8 @@ export const blueprint = definePreset({
     },
   },
   typography: {
-    display: "ibm-plex-sans",
-    body: "ibm-plex-sans",
+    display: "dm-sans",
+    body: "dm-sans",
     mono: "ibm-plex-mono",
     baseSize: 16,
     scaleRatio: 1.22,

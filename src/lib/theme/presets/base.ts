@@ -12,8 +12,8 @@ type PresetInput = Pick<ThemePreset, "id" | "name" | "description"> &
 const defaults: Omit<ThemePreset, "id" | "name" | "description" | "colors"> = {
   defaultMode: "dark",
   typography: {
-    display: "inter",
-    body: "inter",
+    display: "dm-sans",
+    body: "dm-sans",
     mono: "jetbrains-mono",
     baseSize: 16,
     scaleRatio: 1.25,

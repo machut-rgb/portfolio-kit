@@ -20,7 +20,7 @@ import {
  * the single place fonts are declared.
  */
 
-const syne = Syne({ subsets: ["latin"], variable: "--font-syne", display: "swap" });
+const syne = Syne({ subsets: ["latin"], variable: "--font-syne", display: "swap", preload: false });
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans", display: "swap" });
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],

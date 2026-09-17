@@ -4,7 +4,7 @@ import { definePreset } from "./base";
 export const dusk = definePreset({
   id: "dusk",
   name: "Dusk",
-  description: "Serif headlines, plum shadows, soft gold. Reads like an essay.",
+  description: "Plum shadows and soft gold. Reads like an essay.",
   defaultMode: "dark",
   colors: {
     dark: {
@@ -51,8 +51,8 @@ export const dusk = definePreset({
     },
   },
   typography: {
-    display: "fraunces",
-    body: "work-sans",
+    display: "dm-sans",
+    body: "dm-sans",
     mono: "ibm-plex-mono",
     baseSize: 17,
     scaleRatio: 1.26,

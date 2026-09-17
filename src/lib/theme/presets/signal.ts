@@ -51,8 +51,8 @@ export const signal = definePreset({
     },
   },
   typography: {
-    display: "space-grotesk",
-    body: "inter",
+    display: "dm-sans",
+    body: "dm-sans",
     mono: "jetbrains-mono",
     baseSize: 17,
     scaleRatio: 1.333,
