@@ -16,7 +16,6 @@ export interface SiteConfig {
     projectPages: boolean;
     resume: boolean;
     contactForm: boolean;
-    commandPalette: boolean;
     localeSwitcher: boolean;
     analytics: boolean;
   };
@@ -48,7 +47,6 @@ export const siteConfig: SiteConfig = {
     projectPages: true,
     resume: true,
     contactForm: true,
-    commandPalette: true,
     localeSwitcher: true,
     analytics: false,
   },

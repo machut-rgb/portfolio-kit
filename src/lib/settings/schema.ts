@@ -25,7 +25,6 @@ export const siteSettingsSchema = z.object({
     projectPages: z.boolean(),
     resume: z.boolean(),
     contactForm: z.boolean(),
-    commandPalette: z.boolean(),
     localeSwitcher: z.boolean(),
     analytics: z.boolean(),
   }),

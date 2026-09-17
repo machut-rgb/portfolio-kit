@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import Script from "next/script";
 import { locales, isLocale, defaultLocale, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getSiteSettings, getThemeSettings } from "@/lib/settings";
@@ -107,9 +106,26 @@ export default async function LocaleLayout({
     <html lang={locale} suppressHydrationWarning className={fontVariables}>
       <head>
         <style id="theme-presets" dangerouslySetInnerHTML={{ __html: themeCss }} />
-        <Script id="theme-init" strategy="beforeInteractive">
-          {themeInitScript(themeConfig.defaultPreset, themeConfig.defaultMode)}
-        </Script>
+        {/* Plain inline script, not next/script: this must execute
+            synchronously during HTML parsing, before first paint, or the
+            visitor sees a flash of the default theme. It ships in the
+            server-rendered HTML, which is where it actually runs.
+
+            React logs "Encountered a script tag while rendering React
+            component" for this in DEVELOPMENT ONLY. That warning fires when
+            React *creates* a script client-side (during a soft navigation
+            that remounts this layout) — it never applies to the SSR'd copy,
+            and the production React build contains no such warning. It's
+            also harmless on soft nav: data-theme is already on <html> and
+            ThemeProvider owns it from then on. Don't "fix" this by adding a
+            non-executable `type`; that silences the warning by stopping the
+            browser from running it. */}
+        <script
+          id="theme-init"
+          dangerouslySetInnerHTML={{
+            __html: themeInitScript(themeConfig.defaultPreset, themeConfig.defaultMode),
+          }}
+        />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body>

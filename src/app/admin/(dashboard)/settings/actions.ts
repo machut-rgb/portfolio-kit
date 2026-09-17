@@ -26,7 +26,6 @@ export async function updateSiteSettingsAction(
       projectPages: parseBoolean(formData, "features.projectPages"),
       resume: parseBoolean(formData, "features.resume"),
       contactForm: parseBoolean(formData, "features.contactForm"),
-      commandPalette: parseBoolean(formData, "features.commandPalette"),
       localeSwitcher: parseBoolean(formData, "features.localeSwitcher"),
       analytics: parseBoolean(formData, "features.analytics"),
     },

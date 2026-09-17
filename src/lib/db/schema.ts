@@ -81,6 +81,20 @@ export const auditLogRelations = relations(auditLog, ({ one }) => ({
   actor: one(users, { fields: [auditLog.actorId], references: [users.id] }),
 }));
 
+/**
+ * Fixed-window rate limiting, in the database rather than in memory.
+ *
+ * An in-process Map resets on every serverless cold start and isn't shared
+ * between concurrent instances, so on Vercel/Netlify it would throttle
+ * almost nothing. Same reasoning as the login lockout on `users`.
+ */
+export const rateLimits = sqliteTable("rate_limits", {
+  /** Scope + identifier, e.g. `contact:203.0.*`. */
+  key: text("key").primaryKey(),
+  hits: integer("hits").notNull().default(0),
+  windowStart: integer("window_start", { mode: "timestamp_ms" }).notNull(),
+});
+
 // ---------------------------------------------------------------------------
 // Content — singletons
 // ---------------------------------------------------------------------------

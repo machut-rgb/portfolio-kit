@@ -56,7 +56,6 @@ export default async function SiteSettingsPage() {
           <CheckboxField name="features.projectPages" label="Project detail pages" defaultChecked={settings.features.projectPages} />
           <CheckboxField name="features.resume" label="Résumé page" defaultChecked={settings.features.resume} />
           <CheckboxField name="features.contactForm" label="Contact form" defaultChecked={settings.features.contactForm} />
-          <CheckboxField name="features.commandPalette" label="Command palette" defaultChecked={settings.features.commandPalette} />
           <CheckboxField name="features.localeSwitcher" label="Language switcher" defaultChecked={settings.features.localeSwitcher} />
           <CheckboxField name="features.analytics" label="Analytics" defaultChecked={settings.features.analytics} />
         </div>

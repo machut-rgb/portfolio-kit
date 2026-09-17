@@ -46,8 +46,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true });
   }
 
-  const key = clientKey(req);
-  const rate = checkRateLimit(key);
+  const key = `contact:${clientKey(req)}`;
+  const rate = await checkRateLimit(key);
   if (!rate.allowed) {
     return NextResponse.json(
       { success: false, error: "rate_limited", retryAfterSeconds: rate.retryAfterSeconds },
