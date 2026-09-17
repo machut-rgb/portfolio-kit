@@ -1,0 +1,45 @@
+{
+  "name": "portfolio-kit",
+  "version": "2.0.0",
+  "private": true,
+  "description": "A forkable, fully themeable portfolio platform built with Next.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "validate:content": "tsx scripts/validate-content.ts",
+    "theme:list": "tsx scripts/list-themes.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "db:studio": "drizzle-kit studio",
+    "seed-content": "tsx scripts/seed-content.ts",
+    "create-admin": "tsx scripts/create-admin.ts"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.18.0",
+    "argon2": "^0.45.1",
+    "drizzle-orm": "^0.45.2",
+    "next": "16.3.4",
+    "nodemailer": "^10.0.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^24.0.0",
+    "@types/nodemailer": "^8.0.1",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "drizzle-kit": "^0.31.10",
+    "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.13",
+    "typescript": "^5.9.0"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "license": "MIT"
+}
