@@ -26,9 +26,7 @@ export const siteSettingsSchema = z.object({
     resume: z.boolean(),
     contactForm: z.boolean(),
     localeSwitcher: z.boolean(),
-    analytics: z.boolean(),
   }),
-  footerLinks: z.array(z.object({ label: localized, href: z.string() })),
 });
 
 export type SiteSettingsData = z.infer<typeof siteSettingsSchema>;

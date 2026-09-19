@@ -12,12 +12,14 @@ export function ProjectGrid({
   locale,
   variant,
   allLabel,
+  detailPagesEnabled,
 }: {
   projects: Project[];
   tags: string[];
   locale: Locale;
   variant: "grid" | "list";
   allLabel: string;
+  detailPagesEnabled: boolean;
 }) {
   const [active, setActive] = useState<string | null>(null);
   const visible = useMemo(
@@ -47,7 +49,13 @@ export function ProjectGrid({
 
       <div className={variant === "grid" ? "grid gap-5 sm:grid-cols-2 lg:grid-cols-3" : "flex flex-col gap-4"}>
         {visible.map((project) => (
-          <ProjectCard key={project.slug} project={project} locale={locale} list={variant === "list"} />
+          <ProjectCard
+            key={project.slug}
+            project={project}
+            locale={locale}
+            list={variant === "list"}
+            detailPagesEnabled={detailPagesEnabled}
+          />
         ))}
       </div>
     </div>

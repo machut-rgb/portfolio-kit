@@ -37,5 +37,4 @@ export const profile: Profile = {
     width: 520,
     height: 600,
   },
-  resume: "/resume",
 };

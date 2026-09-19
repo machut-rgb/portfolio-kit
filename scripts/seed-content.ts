@@ -246,7 +246,6 @@ async function main() {
       defaultLocale: siteConfig.defaultLocale,
       repository: siteConfig.repository,
       features: siteConfig.features,
-      footerLinks: siteConfig.footerLinks,
     },
   });
   await db.insert(themeSettings).values({

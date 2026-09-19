@@ -17,10 +17,7 @@ export interface SiteConfig {
     resume: boolean;
     contactForm: boolean;
     localeSwitcher: boolean;
-    analytics: boolean;
   };
-  /** Extra links appended to the footer. */
-  footerLinks: { label: L; href: string }[];
 }
 
 export const siteConfig: SiteConfig = {
@@ -48,7 +45,5 @@ export const siteConfig: SiteConfig = {
     resume: true,
     contactForm: true,
     localeSwitcher: true,
-    analytics: false,
   },
-  footerLinks: [],
 };

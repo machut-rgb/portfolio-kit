@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { isLocale, defaultLocale, type Locale } from "@/lib/i18n/config";
+import { notFound } from "next/navigation";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { getSiteSettings } from "@/lib/settings";
 import { getContent, getExperience, getFullName, getPrimaryRole } from "@/lib/content";
 import { t, tAll } from "@/lib/i18n/localize";
 
@@ -9,6 +11,9 @@ export const metadata: Metadata = { title: "Résumé", robots: { index: false } 
 export default async function ResumePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: raw } = await params;
   const locale: Locale = isLocale(raw) ? raw : defaultLocale;
+  const { features } = await getSiteSettings();
+  if (!features.resume) notFound();
+
   const content = await getContent();
   const dict = getDictionary(locale);
   const experience = await getExperience();

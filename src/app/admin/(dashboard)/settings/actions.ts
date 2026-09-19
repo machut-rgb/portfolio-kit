@@ -26,9 +26,7 @@ export async function updateSiteSettingsAction(
       resume: parseBoolean(formData, "features.resume"),
       contactForm: parseBoolean(formData, "features.contactForm"),
       localeSwitcher: parseBoolean(formData, "features.localeSwitcher"),
-      analytics: parseBoolean(formData, "features.analytics"),
     },
-    footerLinks: [] as { label: string; href: string }[],
   };
 
   // Validate before writing, using the same schema the read path uses — so

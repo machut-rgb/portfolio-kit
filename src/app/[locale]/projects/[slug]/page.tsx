@@ -40,6 +40,9 @@ export default async function ProjectPage({
 }) {
   const { locale: raw, slug } = await params;
   const locale: Locale = isLocale(raw) ? raw : defaultLocale;
+  const { features } = await getSiteSettings();
+  if (!features.projectPages) notFound();
+
   const project = await getProject(slug);
   if (!project) notFound();
 

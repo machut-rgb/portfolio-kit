@@ -4,8 +4,20 @@ import type { Locale } from "@/lib/i18n/config";
 import type { Project } from "@/lib/content/types";
 import { Icon } from "@/components/ui/Icon";
 
-export function ProjectCard({ project, locale, list }: { project: Project; locale: Locale; list?: boolean }) {
-  const hasDetail = !!(project.body?.length || project.highlights?.length);
+export function ProjectCard({
+  project,
+  locale,
+  list,
+  detailPagesEnabled,
+}: {
+  project: Project;
+  locale: Locale;
+  list?: boolean;
+  /** When detail pages are turned off site-wide, cards render as plain
+   *  blocks rather than dead links to a route that now 404s. */
+  detailPagesEnabled: boolean;
+}) {
+  const hasDetail = detailPagesEnabled && !!(project.body?.length || project.highlights?.length);
   const className = `card card-interactive relative group ${list ? "flex flex-col md:flex-row md:items-start md:gap-6" : ""}`;
 
   const inner = <ProjectCardBody project={project} locale={locale} list={list} hasDetail={hasDetail} />;

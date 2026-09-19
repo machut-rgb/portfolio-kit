@@ -11,6 +11,13 @@ export async function Footer({ locale }: { locale: Locale }) {
   const name = await getFullName();
   const siteConfig = await getSiteSettings();
   const navItems = (await getNavSections()).slice(0, 3);
+  // The resume page was previously unreachable: nothing linked to it and the
+  // profile's `resume` field was stored but never rendered. An explicit link
+  // here makes both the field and the feature flag meaningful. A custom value
+  // (an external PDF, say) wins over the built-in page.
+  const resumeHref = siteConfig.features.resume
+    ? content.profile.resume || `/${locale}/resume`
+    : null;
   const year = new Date().getFullYear();
 
   return (
@@ -29,6 +36,22 @@ export async function Footer({ locale }: { locale: Locale }) {
                 style={{ color: "var(--p-fg-muted)" }}
               >
                 {dict.nav[s.id as keyof typeof dict.nav] ?? s.id}
+              </Link>
+            ))}
+          {resumeHref &&
+            (resumeHref.startsWith("http") ? (
+              <a
+                href={resumeHref}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="font-mono text-xs"
+                style={{ color: "var(--p-fg-muted)" }}
+              >
+                {dict.nav.resume}
+              </a>
+            ) : (
+              <Link href={resumeHref} className="font-mono text-xs" style={{ color: "var(--p-fg-muted)" }}>
+                {dict.nav.resume}
               </Link>
             ))}
           {content.social.map((link) => (

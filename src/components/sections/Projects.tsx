@@ -31,7 +31,14 @@ export async function Projects({
         locale={locale}
       />
       <Reveal>
-        <ProjectGrid projects={projects} tags={tags} locale={locale} variant={variant} allLabel={dict.projects.all} />
+        <ProjectGrid
+          projects={projects}
+          tags={tags}
+          locale={locale}
+          variant={variant}
+          allLabel={dict.projects.all}
+          detailPagesEnabled={siteConfig.features.projectPages}
+        />
       </Reveal>
       {siteConfig.repository && (
         <div className="mt-10 text-center">

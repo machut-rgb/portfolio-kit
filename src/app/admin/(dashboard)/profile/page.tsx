@@ -69,7 +69,12 @@ export default async function ProfileEditorPage() {
         <LocalizedField name="photoAlt" label="Photo alt text" defaultValues={localizedDefaults(row?.photoAlt ?? undefined)} />
 
         <div className="hairline my-2" />
-        <TextField name="resume" label="Résumé link" defaultValue={row?.resume ?? ""} hint="e.g. /resume" />
+        <TextField
+          name="resume"
+          label="Résumé link"
+          defaultValue={row?.resume ?? ""}
+          hint="Leave blank to use the built-in résumé page. Set a URL to link an external file instead."
+        />
       </AdminForm>
     </div>
   );
