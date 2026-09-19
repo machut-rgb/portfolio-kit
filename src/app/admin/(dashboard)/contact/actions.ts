@@ -3,7 +3,7 @@
 import { asc, desc, eq, gt, lt } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db/client";
-import { contact, contactChannels, socialLinks } from "@/lib/db/schema";
+import { contact, contactChannels } from "@/lib/db/schema";
 import { saveSingleton } from "@/lib/db/singleton";
 import { withAdminMutation } from "@/lib/admin/mutation";
 import { generateId } from "@/lib/auth/tokens";
@@ -11,37 +11,15 @@ import { adminHref } from "@/lib/auth/config";
 import { parseLocalized, parseOptionalString, parseString } from "@/lib/admin/formData";
 import type { FormActionState } from "@/components/admin/forms/AdminForm";
 
-/** One social link per line: `Label|https://url|icon|handle` — handle is optional. */
-function parseSocialLines(raw: string): { label: string; href: string; icon: string; handle?: string }[] {
-  return raw
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .map((line) => {
-      const [label, href, icon, handle] = line.split("|").map((p) => p.trim());
-      return { label: label!, href: href!, icon: icon || "globe", handle: handle || undefined };
-    })
-    .filter((s) => s.label && s.href);
-}
-
 export async function updateContactAction(_prev: FormActionState, formData: FormData): Promise<FormActionState> {
   const heading = parseLocalized(formData, "heading");
   const body = parseLocalized(formData, "body");
-  const socialRaw = parseString(formData, "social");
 
   try {
     await withAdminMutation(
       "contact.update",
       async () => {
         await saveSingleton(contact, { heading, body, updatedAt: new Date() });
-
-        await db.delete(socialLinks);
-        const links = parseSocialLines(socialRaw);
-        if (links.length > 0) {
-          await db.insert(socialLinks).values(
-            links.map((link, position) => ({ id: generateId(), ...link, position })),
-          );
-        }
       },
       { entityType: "contact" },
     );

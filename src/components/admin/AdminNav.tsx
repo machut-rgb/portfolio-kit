@@ -14,6 +14,7 @@ const NAV_GROUPS: { label: string; items: { label: string; icon: string; href?: 
       { label: "Skills", icon: "network", href: "/skills" },
       { label: "Certifications", icon: "shield", href: "/certifications" },
       { label: "Contact", icon: "mail", href: "/contact" },
+      { label: "Social links", icon: "globe", href: "/contact/social" },
     ],
   },
   {
