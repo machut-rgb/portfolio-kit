@@ -55,7 +55,20 @@ export async function Experience({
                 {t(item.role, locale)}
               </h3>
               <div className="text-sm mt-0.5 mb-3" style={{ color: "var(--p-fg-muted)" }}>
-                <span style={{ color: "var(--p-primary)" }}>{item.org}</span> · {item.location}
+                {item.orgUrl ? (
+                  <a
+                    href={item.orgUrl}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="link-quiet"
+                    style={{ color: "var(--p-primary)" }}
+                  >
+                    {item.org}
+                  </a>
+                ) : (
+                  <span style={{ color: "var(--p-primary)" }}>{item.org}</span>
+                )}{" "}
+                · {item.location}
               </div>
               <ul className="space-y-1.5">
                 {tAll(item.bullets, locale).map((b, i) => (

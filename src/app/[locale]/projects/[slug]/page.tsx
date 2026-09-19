@@ -61,6 +61,12 @@ export default async function ProjectPage({
       <h1 className="text-heading mb-4">{project.name}</h1>
       <div className="flex flex-wrap items-center gap-3 mb-8 text-sm" style={{ color: "var(--p-fg-muted)" }}>
         <span>{project.year}</span>
+        {project.status && project.status !== "live" && (
+          <>
+            <span aria-hidden="true">·</span>
+            <span className="tag">{dict.projects[project.status]}</span>
+          </>
+        )}
         {project.role && (
           <>
             <span aria-hidden="true">·</span>

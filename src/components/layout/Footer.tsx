@@ -65,7 +65,7 @@ export async function Footer({ locale }: { locale: Locale }) {
               aria-label={link.label}
             >
               <Icon name={link.icon} />
-              <span className="hidden sm:inline">{link.label}</span>
+              <span className="hidden sm:inline">{link.handle ? `${link.label}/${link.handle}` : link.label}</span>
             </a>
           ))}
           {siteConfig.repository && (

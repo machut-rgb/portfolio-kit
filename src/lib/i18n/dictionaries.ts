@@ -55,6 +55,8 @@ const en = {
     empty: "Nothing here yet.",
     highlights: "What it does",
     sourcePrivate: "Source code is not public for this project.",
+    wip: "Work in progress",
+    archived: "Archived",
   },
   theme: {
     title: "Theme studio",
@@ -148,6 +150,8 @@ const fr: PartialDeep<Dictionary> = {
     empty: "Rien pour l'instant.",
     highlights: "Ce que ça fait",
     sourcePrivate: "Le code source de ce projet n'est pas public.",
+    wip: "En cours",
+    archived: "Archivé",
   },
   theme: {
     title: "Studio de thème",
@@ -233,6 +237,8 @@ const mg: PartialDeep<Dictionary> = {
     empty: "Mbola tsy misy.",
     highlights: "Izay ataony",
     sourcePrivate: "Tsy miseho ampahibemaso ny kaody an'ity tetikasa ity.",
+    wip: "Mbola atao",
+    archived: "Voatahiry",
   },
   theme: {
     title: "Studio endrika",

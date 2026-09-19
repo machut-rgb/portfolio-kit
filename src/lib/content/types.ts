@@ -82,7 +82,6 @@ export interface SkillItem {
   name: string;
   /** 1–5, only rendered by variants that show proficiency. */
   level?: number;
-  note?: L;
 }
 
 export interface SkillGroup {

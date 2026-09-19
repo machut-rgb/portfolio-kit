@@ -194,7 +194,6 @@ async function main() {
           groupId: group.id,
           name: item.name,
           level: item.level,
-          note: item.note,
           position: itemIndex,
         })),
       );

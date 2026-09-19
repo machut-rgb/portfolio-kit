@@ -96,6 +96,9 @@ export default async function ResumePage({ params }: { params: Promise<{ locale:
           {content.education.map((edu) => (
             <div key={edu.id} className="text-sm">
               <strong>{t(edu.degree, locale)}</strong> — {edu.school}, {edu.location} ({edu.start}–{edu.end})
+              {edu.note && (
+                <div style={{ color: "var(--p-fg-muted)" }}>{t(edu.note, locale)}</div>
+              )}
             </div>
           ))}
         </section>

@@ -181,7 +181,6 @@ function rowToSkillGroup(
     items: row.items.map((item) => ({
       name: item.name,
       level: item.level ?? undefined,
-      note: item.note ?? undefined,
     })),
   };
 }

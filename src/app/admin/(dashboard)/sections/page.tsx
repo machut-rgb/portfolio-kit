@@ -93,6 +93,13 @@ export default async function SectionsPage() {
                   <LocalizedField name="title" label="Heading" defaultValues={title.defaults} />
 
                   <LocalizedField
+                    name="navLabel"
+                    label="Nav label (optional)"
+                    defaultValues={localizedDefaults(row.navLabel ?? undefined)}
+                    hint="Overrides the default wording in the navigation."
+                  />
+
+                  <LocalizedField
                     name="intro"
                     label="Intro (optional)"
                     defaultValues={localizedDefaults(row.intro ?? undefined)}

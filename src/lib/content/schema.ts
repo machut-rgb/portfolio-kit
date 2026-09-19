@@ -87,7 +87,6 @@ export const skillGroupSchema = z.object({
       z.object({
         name: z.string().min(1),
         level: z.number().int().min(1).max(5).optional(),
-        note: localized.optional(),
       }),
     )
     .min(1),

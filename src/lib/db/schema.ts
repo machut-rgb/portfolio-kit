@@ -246,7 +246,6 @@ export const skillItems = sqliteTable("skill_items", {
     .references(() => skillGroups.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
   level: integer("level"),
-  note: text("note", { mode: "json" }).$type<L>(),
   position: integer("position").notNull().default(0),
 });
 

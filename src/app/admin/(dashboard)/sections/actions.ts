@@ -31,6 +31,7 @@ export async function updateSectionAction(
             // "fall back to the default heading".
             title: parseBoolean(formData, "hideTitle") ? false : title,
             eyebrow: parseBoolean(formData, "hideEyebrow") ? false : eyebrow,
+            navLabel: parseLocalizedOptional(formData, "navLabel"),
             intro: parseLocalizedOptional(formData, "intro"),
           })
           .where(eq(sections.id, id));
