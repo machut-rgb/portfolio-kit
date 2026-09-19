@@ -65,7 +65,13 @@ export const projectSchema = z.object({
   role: localized.optional(),
   tags: z.array(z.string()),
   links: z
-    .object({ repo: z.string().url().optional(), demo: z.string().url().optional(), writeup: z.string().url().optional() })
+    .object({
+      repo: z.string().url().optional(),
+      demo: z.string().url().optional(),
+      writeup: z.string().url().optional(),
+      sourcePrivate: z.boolean().optional(),
+      sourceNote: z.string().optional(),
+    })
     .optional(),
   featured: z.boolean().optional(),
   status: z.enum(["live", "archived", "wip"]).optional(),

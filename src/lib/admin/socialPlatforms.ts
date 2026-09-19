@@ -48,14 +48,4 @@ export function detectPlatform(href: string): PlatformMatch | null {
 }
 
 /** Accepts web and mail links only. Anything else (javascript:, data:) is refused. */
-export function isAllowedSocialHref(href: string): boolean {
-  const value = href.trim();
-  if (!value) return false;
-  if (value.toLowerCase().startsWith("mailto:")) return /^mailto:[^\s@]+@[^\s@]+\.[^\s@]+$/i.test(value);
-  try {
-    const { protocol } = new URL(value);
-    return protocol === "https:" || protocol === "http:";
-  } catch {
-    return false;
-  }
-}
+export { isAllowedHref as isAllowedSocialHref } from "./urls";

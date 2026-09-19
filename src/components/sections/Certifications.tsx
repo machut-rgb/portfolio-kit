@@ -2,6 +2,7 @@ import { getContent } from "@/lib/content";
 import { t } from "@/lib/i18n/localize";
 import type { Locale } from "@/lib/i18n/config";
 import type { SectionConfig, SectionVariants } from "@config/sections.config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
@@ -16,6 +17,7 @@ export async function Certifications({
   config: SectionConfig & { type: "certifications" };
 }) {
   const { certifications } = await getContent();
+  const dict = getDictionary(locale);
   if (certifications.length === 0) return null;
 
   return (
@@ -47,6 +49,17 @@ export async function Certifications({
                   <p className="text-sm mt-2" style={{ color: "var(--p-fg-muted)" }}>
                     {t(cert.description, locale)}
                   </p>
+                  {cert.url && (
+                    <a
+                      href={cert.url}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="link-quiet text-xs mt-2 inline-flex items-center gap-1"
+                    >
+                      {dict.actions.viewCredential}
+                      <Icon name="arrowUpRight" />
+                    </a>
+                  )}
                 </div>
               </div>
             ) : (
@@ -58,8 +71,21 @@ export async function Certifications({
                     {cert.issuer}
                   </div>
                 </div>
-                <div className="text-xs font-mono" style={{ color: "var(--p-accent)" }}>
-                  {cert.year}
+                <div className="flex items-center gap-3">
+                  {cert.url && (
+                    <a
+                      href={cert.url}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="link-quiet text-xs inline-flex items-center gap-1"
+                    >
+                      {dict.actions.viewCredential}
+                      <Icon name="arrowUpRight" />
+                    </a>
+                  )}
+                  <div className="text-xs font-mono" style={{ color: "var(--p-accent)" }}>
+                    {cert.year}
+                  </div>
                 </div>
               </div>
             ),

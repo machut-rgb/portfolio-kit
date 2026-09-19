@@ -213,7 +213,15 @@ export const projects = sqliteTable("projects", {
   year: integer("year").notNull(),
   role: text("role", { mode: "json" }).$type<L>(),
   tags: text("tags", { mode: "json" }).$type<string[]>().notNull(),
-  links: text("links", { mode: "json" }).$type<{ repo?: string; demo?: string; writeup?: string }>(),
+  links: text("links", { mode: "json" }).$type<{
+    repo?: string;
+    demo?: string;
+    writeup?: string;
+    /** Set when the work exists but cannot be shown: client contracts,
+     *  internal systems. Renders a note instead of a missing link. */
+    sourcePrivate?: boolean;
+    sourceNote?: string;
+  }>(),
   featured: integer("featured", { mode: "boolean" }).notNull().default(false),
   status: text("status", { enum: ["live", "archived", "wip"] }),
   coverSrc: text("cover_src"),

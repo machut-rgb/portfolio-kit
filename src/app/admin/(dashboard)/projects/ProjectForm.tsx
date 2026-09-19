@@ -86,6 +86,19 @@ export function ProjectForm({
         <TextField name="linkWriteup" label="Write-up" type="url" defaultValue={defaults?.links?.writeup} />
       </div>
 
+      <CheckboxField
+        name="sourcePrivate"
+        label="Source code is not public"
+        defaultChecked={defaults?.links?.sourcePrivate}
+        hint="For client or internal work."
+      />
+      <TextField
+        name="sourceNote"
+        label="Reason shown to visitors (optional)"
+        defaultValue={defaults?.links?.sourceNote}
+        hint="e.g. Client project, source under NDA. Leave blank for a neutral note."
+      />
+
       <div className="hairline my-2" />
       <div className="eyebrow -mb-2">Cover image</div>
       <ImageField

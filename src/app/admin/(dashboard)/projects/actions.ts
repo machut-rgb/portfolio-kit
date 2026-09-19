@@ -6,6 +6,7 @@ import { db } from "@/lib/db/client";
 import { projects } from "@/lib/db/schema";
 import { withAdminMutation } from "@/lib/admin/mutation";
 import { UploadError, describeStorageError, fileFromForm, storeImage } from "@/lib/media/storage";
+import { firstInvalidLink } from "@/lib/admin/urls";
 import { adminHref } from "@/lib/auth/config";
 import {
   parseBoolean,
@@ -27,6 +28,11 @@ async function readFields(formData: FormData, existing?: typeof projects.$inferS
   const repo = parseOptionalString(formData, "linkRepo");
   const demo = parseOptionalString(formData, "linkDemo");
   const writeup = parseOptionalString(formData, "linkWriteup");
+  const sourcePrivate = parseBoolean(formData, "sourcePrivate");
+  const sourceNote = parseOptionalString(formData, "sourceNote");
+
+  const badLink = firstInvalidLink({ repository: repo, demo, "write-up": writeup });
+  if (badLink) throw new UploadError(badLink);
 
   const upload = await storeImage(fileFromForm(formData, "cover"));
   if (upload.error) throw new UploadError(upload.error);
@@ -50,7 +56,10 @@ async function readFields(formData: FormData, existing?: typeof projects.$inferS
     year: parseNumber(formData, "year") ?? new Date().getFullYear(),
     role: parseLocalizedOptional(formData, "role"),
     tags: parseList(formData, "tags"),
-    links: repo || demo || writeup ? { repo, demo, writeup } : undefined,
+    links:
+      repo || demo || writeup || sourcePrivate
+        ? { repo, demo, writeup, sourcePrivate: sourcePrivate || undefined, sourceNote }
+        : undefined,
     featured: parseBoolean(formData, "featured"),
     status: status || undefined,
     coverSrc: cover.src,

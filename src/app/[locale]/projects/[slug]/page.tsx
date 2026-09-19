@@ -116,7 +116,19 @@ export default async function ProjectPage({
             {dict.actions.liveDemo}
           </ButtonLink>
         )}
+        {project.links?.writeup && (
+          <ButtonLink href={project.links.writeup} variant="outline" size="sm" icon="arrowUpRight">
+            {dict.actions.readMore}
+          </ButtonLink>
+        )}
       </div>
+
+      {project.links?.sourcePrivate && (
+        <p className="text-sm mt-4 flex items-center gap-2" style={{ color: "var(--p-fg-subtle)" }}>
+          <Icon name="shield" className="flex-none" />
+          {project.links.sourceNote || dict.projects.sourcePrivate}
+        </p>
+      )}
     </article>
   );
 }

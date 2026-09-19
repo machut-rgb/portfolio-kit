@@ -8,6 +8,7 @@ import { withAdminMutation } from "@/lib/admin/mutation";
 import { generateId } from "@/lib/auth/tokens";
 import { adminHref } from "@/lib/auth/config";
 import { parseLocalized, parseOptionalString, parseString } from "@/lib/admin/formData";
+import { firstInvalidLink } from "@/lib/admin/urls";
 import type { FormActionState } from "@/components/admin/forms/AdminForm";
 
 function readFields(formData: FormData) {
@@ -24,7 +25,7 @@ function readFields(formData: FormData) {
 function validate(fields: ReturnType<typeof readFields>): string | null {
   if (!fields.issuer) return "Issuer is required.";
   if (!fields.year) return "Year is required.";
-  return null;
+  return firstInvalidLink({ credential: fields.url });
 }
 
 export async function createCertificationAction(_prev: FormActionState, formData: FormData): Promise<FormActionState> {

@@ -30,6 +30,7 @@ const en = {
     copied: "Copied",
     openSource: "Source",
     liveDemo: "Live demo",
+    viewCredential: "View credential",
   },
   form: {
     name: "Name",
@@ -53,6 +54,7 @@ const en = {
     role: "Role",
     empty: "Nothing here yet.",
     highlights: "What it does",
+    sourcePrivate: "Source code is not public for this project.",
   },
   theme: {
     title: "Theme studio",
@@ -121,6 +123,7 @@ const fr: PartialDeep<Dictionary> = {
     copied: "Copié",
     openSource: "Code",
     liveDemo: "Démo",
+    viewCredential: "Voir le certificat",
   },
   form: {
     name: "Nom",
@@ -144,6 +147,7 @@ const fr: PartialDeep<Dictionary> = {
     role: "Rôle",
     empty: "Rien pour l'instant.",
     highlights: "Ce que ça fait",
+    sourcePrivate: "Le code source de ce projet n'est pas public.",
   },
   theme: {
     title: "Studio de thème",
@@ -204,6 +208,7 @@ const mg: PartialDeep<Dictionary> = {
     copied: "Voadika",
     openSource: "Kaody",
     liveDemo: "Fanehoana",
+    viewCredential: "Jereo ny fanamarinana",
   },
   form: {
     name: "Anarana",
@@ -227,6 +232,7 @@ const mg: PartialDeep<Dictionary> = {
     role: "Andraikitra",
     empty: "Mbola tsy misy.",
     highlights: "Izay ataony",
+    sourcePrivate: "Tsy miseho ampahibemaso ny kaody an'ity tetikasa ity.",
   },
   theme: {
     title: "Studio endrika",

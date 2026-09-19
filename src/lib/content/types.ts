@@ -72,7 +72,7 @@ export interface Project {
   year: number;
   role?: L;
   tags: string[];
-  links?: { repo?: string; demo?: string; writeup?: string };
+  links?: { repo?: string; demo?: string; writeup?: string; sourcePrivate?: boolean; sourceNote?: string };
   featured?: boolean;
   status?: ProjectStatus;
   cover?: Photo;
