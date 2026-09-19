@@ -9,7 +9,9 @@ const NAV_GROUPS: { label: string; items: { label: string; icon: string; href?: 
     items: [
       { label: "Profile", icon: "sparkle", href: "/profile" },
       { label: "About", icon: "code", href: "/about" },
+      { label: "Stats", icon: "sparkle", href: "/stats" },
       { label: "Experience", icon: "briefcase", href: "/experience" },
+      { label: "Education", icon: "graduation", href: "/education" },
       { label: "Projects", icon: "layers", href: "/projects" },
       { label: "Skills", icon: "network", href: "/skills" },
       { label: "Certifications", icon: "shield", href: "/certifications" },
