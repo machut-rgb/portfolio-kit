@@ -1,8 +1,7 @@
 "use server";
 
-import { eq } from "drizzle-orm";
-import { db } from "@/lib/db/client";
 import { siteSettings } from "@/lib/db/schema";
+import { saveSingleton } from "@/lib/db/singleton";
 import { withAdminMutation } from "@/lib/admin/mutation";
 import { parseBoolean, parseLocalized, parseList, parseString } from "@/lib/admin/formData";
 import { siteSettingsSchema } from "@/lib/settings/schema";
@@ -43,10 +42,7 @@ export async function updateSiteSettingsAction(
     await withAdminMutation(
       "siteSettings.update",
       async () => {
-        await db
-          .update(siteSettings)
-          .set({ data: parsed.data, updatedAt: new Date() })
-          .where(eq(siteSettings.id, 1));
+        await saveSingleton(siteSettings, { data: parsed.data, updatedAt: new Date() });
       },
       { entityType: "siteSettings" },
     );

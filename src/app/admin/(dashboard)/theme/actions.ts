@@ -1,8 +1,7 @@
 "use server";
 
-import { eq } from "drizzle-orm";
-import { db } from "@/lib/db/client";
 import { themeSettings } from "@/lib/db/schema";
+import { saveSingleton } from "@/lib/db/singleton";
 import { withAdminMutation } from "@/lib/admin/mutation";
 import { parseBoolean, parseString } from "@/lib/admin/formData";
 import { themeSettingsSchema } from "@/lib/settings/schema";
@@ -43,10 +42,7 @@ export async function updateThemeSettingsAction(
     await withAdminMutation(
       "themeSettings.update",
       async () => {
-        await db
-          .update(themeSettings)
-          .set({ data: parsed.data, updatedAt: new Date() })
-          .where(eq(themeSettings.id, 1));
+        await saveSingleton(themeSettings, { data: parsed.data, updatedAt: new Date() });
       },
       { entityType: "themeSettings" },
     );

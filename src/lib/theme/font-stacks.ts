@@ -6,7 +6,6 @@ import type { FontKey } from "./types";
  * webfonts land (and if a fork removes the font entirely).
  */
 export const FONT_STACKS: Record<FontKey, string> = {
-  syne: "var(--font-syne), ui-sans-serif, system-ui, sans-serif",
   "dm-sans": "var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif",
   "jetbrains-mono": "var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace",
   "ibm-plex-sans": "var(--font-ibm-plex-sans), ui-sans-serif, system-ui, sans-serif",
@@ -18,7 +17,6 @@ export const FONT_STACKS: Record<FontKey, string> = {
 };
 
 export const FONT_LABELS: Record<FontKey, string> = {
-  syne: "Syne",
   "dm-sans": "DM Sans",
   "jetbrains-mono": "JetBrains Mono",
   "ibm-plex-sans": "IBM Plex Sans",

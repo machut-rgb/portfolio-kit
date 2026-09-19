@@ -4,6 +4,7 @@ import { asc, desc, eq, gt, lt } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db/client";
 import { contact, contactChannels, socialLinks } from "@/lib/db/schema";
+import { saveSingleton } from "@/lib/db/singleton";
 import { withAdminMutation } from "@/lib/admin/mutation";
 import { generateId } from "@/lib/auth/tokens";
 import { adminHref } from "@/lib/auth/config";
@@ -32,7 +33,7 @@ export async function updateContactAction(_prev: FormActionState, formData: Form
     await withAdminMutation(
       "contact.update",
       async () => {
-        await db.update(contact).set({ heading, body, updatedAt: new Date() }).where(eq(contact.id, 1));
+        await saveSingleton(contact, { heading, body, updatedAt: new Date() });
 
         await db.delete(socialLinks);
         const links = parseSocialLines(socialRaw);

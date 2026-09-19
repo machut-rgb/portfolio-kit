@@ -1,8 +1,7 @@
 "use server";
 
-import { eq } from "drizzle-orm";
-import { db } from "@/lib/db/client";
 import { profile } from "@/lib/db/schema";
+import { saveSingleton } from "@/lib/db/singleton";
 import { withAdminMutation } from "@/lib/admin/mutation";
 import {
   parseLocalized,
@@ -25,9 +24,7 @@ export async function updateProfileAction(_prev: FormActionState, formData: Form
     await withAdminMutation(
       "profile.update",
       async () => {
-        await db
-          .update(profile)
-          .set({
+        await saveSingleton(profile, {
             firstName,
             lastName,
             handle: parseString(formData, "handle"),
@@ -42,10 +39,9 @@ export async function updateProfileAction(_prev: FormActionState, formData: Form
             photoAlt: parseLocalized(formData, "photoAlt"),
             photoWidth: parseNumber(formData, "photoWidth"),
             photoHeight: parseNumber(formData, "photoHeight"),
-            resume: parseOptionalString(formData, "resume"),
-            updatedAt: new Date(),
-          })
-          .where(eq(profile.id, 1));
+          resume: parseOptionalString(formData, "resume"),
+          updatedAt: new Date(),
+        });
       },
       { entityType: "profile" },
     );

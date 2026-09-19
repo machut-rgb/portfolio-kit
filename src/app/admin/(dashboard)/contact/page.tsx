@@ -15,9 +15,6 @@ export default async function ContactEditorPage() {
     db.query.contact.findFirst(),
     db.query.socialLinks.findMany({ orderBy: [asc(socialLinks.position)] }),
   ]);
-  if (!row) {
-    return <p style={{ color: "var(--p-danger)" }}>No contact row found. Run the seed script first.</p>;
-  }
 
   const socialText = links.map((l) => [l.label, l.href, l.icon, l.handle ?? ""].join("|")).join("\n");
 
@@ -35,8 +32,8 @@ export default async function ContactEditorPage() {
       </div>
 
       <AdminForm action={updateContactAction}>
-        <LocalizedField name="heading" label="Heading" defaultValues={localizedDefaults(row.heading)} required />
-        <LocalizedField name="body" label="Body" defaultValues={localizedDefaults(row.body)} multiline rows={3} required />
+        <LocalizedField name="heading" label="Heading" defaultValues={localizedDefaults(row?.heading)} required />
+        <LocalizedField name="body" label="Body" defaultValues={localizedDefaults(row?.body)} multiline rows={3} required />
 
         <div className="hairline my-2" />
         <div className="eyebrow -mb-2">Social links</div>
@@ -50,5 +47,18 @@ export default async function ContactEditorPage() {
         />
       </AdminForm>
     </div>
+  );
+}
+
+/** Shown when the row does not exist yet. The form still renders with empty
+ *  fields, because saving it is what creates the row. */
+function EmptyNotice({ label }: { label: string }) {
+  return (
+    <p
+      className="card mb-6 text-sm"
+      style={{ borderColor: "var(--p-warning)", color: "var(--p-fg-muted)" }}
+    >
+      No {label} saved yet. Fill this in and save to create it.
+    </p>
   );
 }

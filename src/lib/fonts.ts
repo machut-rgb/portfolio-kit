@@ -6,7 +6,6 @@ import {
   Inter,
   JetBrains_Mono,
   Space_Grotesk,
-  Syne,
   Work_Sans,
 } from "next/font/google";
 
@@ -20,7 +19,6 @@ import {
  * the single place fonts are declared.
  */
 
-const syne = Syne({ subsets: ["latin"], variable: "--font-syne", display: "swap", preload: false });
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans", display: "swap" });
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -69,7 +67,6 @@ const workSans = Work_Sans({
 
 /** Applied once on <html>; presets pick from these via `FONT_STACKS`. */
 export const fontVariables = [
-  syne.variable,
   dmSans.variable,
   jetbrainsMono.variable,
   ibmPlexSans.variable,

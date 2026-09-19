@@ -54,7 +54,6 @@ export interface ColorTokens {
 
 /** Keys into the font registry in `src/lib/fonts.ts`. */
 export type FontKey =
-  | "syne"
   | "dm-sans"
   | "jetbrains-mono"
   | "ibm-plex-sans"
