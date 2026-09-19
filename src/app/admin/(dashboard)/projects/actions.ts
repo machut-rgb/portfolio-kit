@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db/client";
 import { projects } from "@/lib/db/schema";
 import { withAdminMutation } from "@/lib/admin/mutation";
+import { UploadError, describeStorageError, fileFromForm, storeImage } from "@/lib/media/storage";
 import { adminHref } from "@/lib/auth/config";
 import {
   parseBoolean,
@@ -19,13 +20,26 @@ import {
 import type { FormActionState } from "@/components/admin/forms/AdminForm";
 import type { ProjectStatus } from "@/lib/content/types";
 
-function readFields(formData: FormData) {
+async function readFields(formData: FormData, existing?: typeof projects.$inferSelect) {
   const bodyList = parseLocalizedList(formData, "body");
   const highlightsList = parseLocalizedList(formData, "highlights");
   const status = parseOptionalString(formData, "status") as ProjectStatus | undefined;
   const repo = parseOptionalString(formData, "linkRepo");
   const demo = parseOptionalString(formData, "linkDemo");
   const writeup = parseOptionalString(formData, "linkWriteup");
+
+  const upload = await storeImage(fileFromForm(formData, "cover"));
+  if (upload.error) throw new UploadError(upload.error);
+  const removeCover = parseBoolean(formData, "coverRemove");
+  const cover = upload.stored
+    ? { src: upload.stored.url, width: upload.stored.width, height: upload.stored.height }
+    : removeCover
+      ? { src: null, width: null, height: null }
+      : {
+          src: existing?.coverSrc ?? null,
+          width: existing?.coverWidth ?? null,
+          height: existing?.coverHeight ?? null,
+        };
 
   return {
     name: parseString(formData, "name"),
@@ -39,10 +53,10 @@ function readFields(formData: FormData) {
     links: repo || demo || writeup ? { repo, demo, writeup } : undefined,
     featured: parseBoolean(formData, "featured"),
     status: status || undefined,
-    coverSrc: parseOptionalString(formData, "coverSrc"),
+    coverSrc: cover.src,
     coverAlt: parseLocalizedOptional(formData, "coverAlt"),
-    coverWidth: parseNumber(formData, "coverWidth"),
-    coverHeight: parseNumber(formData, "coverHeight"),
+    coverWidth: cover.width,
+    coverHeight: cover.height,
   };
 }
 
@@ -52,12 +66,17 @@ export async function createProjectAction(_prev: FormActionState, formData: Form
   const slug = parseString(formData, "slug").toLowerCase();
   if (!SLUG_RE.test(slug)) return { error: "Slug must be lowercase, hyphenated (e.g. soc-home-lab)." };
 
-  const fields = readFields(formData);
+  let fields: Awaited<ReturnType<typeof readFields>>;
+  try {
+    const duplicate = await db.query.projects.findFirst({ where: eq(projects.slug, slug) });
+    if (duplicate) return { error: `A project with slug "${slug}" already exists.` };
+    fields = await readFields(formData);
+  } catch (err) {
+    return { error: describeStorageError(err) };
+  }
   if (!fields.name) return { error: "Name is required." };
 
   try {
-    const existing = await db.query.projects.findFirst({ where: eq(projects.slug, slug) });
-    if (existing) return { error: `A project with slug "${slug}" already exists.` };
 
     await withAdminMutation(
       "project.create",
@@ -82,7 +101,13 @@ export async function updateProjectAction(
   _prev: FormActionState,
   formData: FormData,
 ): Promise<FormActionState> {
-  const fields = readFields(formData);
+  let fields: Awaited<ReturnType<typeof readFields>>;
+  try {
+    const existing = await db.query.projects.findFirst({ where: eq(projects.slug, slug) });
+    fields = await readFields(formData, existing);
+  } catch (err) {
+    return { error: describeStorageError(err) };
+  }
   if (!fields.name) return { error: "Name is required." };
 
   try {

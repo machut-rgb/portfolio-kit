@@ -2,6 +2,7 @@ import { db } from "@/lib/db/client";
 import { AdminForm } from "@/components/admin/forms/AdminForm";
 import { LocalizedField } from "@/components/admin/forms/LocalizedField";
 import { TextField } from "@/components/admin/forms/Fields";
+import { ImageField } from "@/components/admin/forms/ImageField";
 import { localizedDefaults, localizedListDefaults } from "@/lib/admin/formData";
 import { updateProfileAction } from "./actions";
 
@@ -54,18 +55,12 @@ export default async function ProfileEditorPage() {
 
         <div className="hairline my-2" />
         <div className="eyebrow -mb-2">Photo</div>
-        <div className="grid sm:grid-cols-2 gap-5">
-          <TextField
-            name="photoSrc"
-            label="Photo path"
-            defaultValue={row?.photoSrc ?? ""}
-            hint="e.g. /images/profile.png — upload support is coming later"
-          />
-          <div className="grid grid-cols-2 gap-3">
-            <TextField name="photoWidth" label="Width" type="number" defaultValue={row?.photoWidth?.toString() ?? ""} />
-            <TextField name="photoHeight" label="Height" type="number" defaultValue={row?.photoHeight?.toString() ?? ""} />
-          </div>
-        </div>
+        <ImageField
+          name="photo"
+          label="Photo"
+          currentUrl={row?.photoSrc}
+          hint="Dimensions are read from the file."
+        />
         <LocalizedField name="photoAlt" label="Photo alt text" defaultValues={localizedDefaults(row?.photoAlt ?? undefined)} />
 
         <div className="hairline my-2" />

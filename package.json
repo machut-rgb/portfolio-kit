@@ -13,6 +13,7 @@
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
     "db:migrate": "tsx scripts/migrate.ts",
+    "db:baseline": "tsx scripts/baseline.ts",
     "db:studio": "drizzle-kit studio",
     "seed-content": "tsx scripts/seed-content.ts",
     "create-admin": "tsx scripts/create-admin.ts"

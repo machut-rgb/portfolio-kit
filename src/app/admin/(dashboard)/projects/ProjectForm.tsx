@@ -1,6 +1,7 @@
 import { AdminForm, type FormActionState } from "@/components/admin/forms/AdminForm";
 import { LocalizedField } from "@/components/admin/forms/LocalizedField";
 import { CheckboxField, SelectField, TextField } from "@/components/admin/forms/Fields";
+import { ImageField } from "@/components/admin/forms/ImageField";
 import { localizedDefaults, localizedListDefaults } from "@/lib/admin/formData";
 import type { projects } from "@/lib/db/schema";
 
@@ -86,12 +87,13 @@ export function ProjectForm({
       </div>
 
       <div className="hairline my-2" />
-      <div className="eyebrow -mb-2">Cover image (optional)</div>
-      <TextField name="coverSrc" label="Path" defaultValue={defaults?.coverSrc ?? undefined} />
-      <div className="grid sm:grid-cols-2 gap-5">
-        <TextField name="coverWidth" label="Width" type="number" defaultValue={defaults?.coverWidth?.toString()} />
-        <TextField name="coverHeight" label="Height" type="number" defaultValue={defaults?.coverHeight?.toString()} />
-      </div>
+      <div className="eyebrow -mb-2">Cover image</div>
+      <ImageField
+        name="cover"
+        label="Cover"
+        currentUrl={defaults?.coverSrc}
+        hint="Optional. Leave empty for a text-only card."
+      />
       <LocalizedField name="coverAlt" label="Cover alt text" defaultValues={localizedDefaults(defaults?.coverAlt ?? undefined)} />
     </AdminForm>
   );

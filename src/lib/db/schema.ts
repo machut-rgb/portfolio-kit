@@ -1,5 +1,5 @@
 import { sql, relations } from "drizzle-orm";
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, blob } from "drizzle-orm/sqlite-core";
 import type { L } from "@/lib/i18n/localize";
 
 /**
@@ -80,6 +80,26 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
 export const auditLogRelations = relations(auditLog, ({ one }) => ({
   actor: one(users, { fields: [auditLog.actorId], references: [users.id] }),
 }));
+
+/**
+ * Uploaded images, content-addressed: `id` is the SHA-256 of the bytes.
+ *
+ * Stored in the database rather than on disk because the deploy target is
+ * serverless, where the filesystem is ephemeral and not shared between
+ * instances. Keeping bytes here means uploads work with no object-storage
+ * account to configure, and the content hash makes the serving route safely
+ * immutable-cacheable and deduplicates re-uploads of the same file.
+ */
+export const media = sqliteTable("media", {
+  id: text("id").primaryKey(),
+  filename: text("filename").notNull(),
+  mimeType: text("mime_type").notNull(),
+  byteSize: integer("byte_size").notNull(),
+  width: integer("width"),
+  height: integer("height"),
+  data: blob("data", { mode: "buffer" }).$type<Buffer>().notNull(),
+  createdAt: timestamps.createdAt,
+});
 
 /**
  * Fixed-window rate limiting, in the database rather than in memory.

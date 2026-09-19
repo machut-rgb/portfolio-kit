@@ -213,9 +213,23 @@ production. Only the connection target changes.
   (with `ADMIN_EMAIL` / `ADMIN_PASSWORD` set, for non-interactive use).
 
 **Changing the schema:** edit `src/lib/db/schema.ts` → `npm run db:generate`
-(writes a migration file) → `npm run db:push` in dev, or `npm run db:migrate`
-against anything real. `db:push` skips migration history; don't use it on a
-deployed database.
+(writes a numbered migration file) → `npm run db:migrate`. Commit the
+generated file; migrations are additive and never regenerated, so an existing
+database can always upgrade.
+
+`npm run db:push` applies a schema directly without recording anything. It is
+convenient while iterating, but a database created that way has no migration
+history, so a later `db:migrate` will try to create tables that already exist
+and stop. If that happens:
+
+```bash
+npm run db:baseline   # marks already-applied migrations as such
+npm run db:migrate    # applies the rest
+```
+
+`db:baseline` only reads the schema and writes journal rows. It never creates,
+alters or drops a table, and it declines to run on a database that is empty or
+already tracked.
 
 > **Gotcha:** `TURSO_AUTH_TOKEN=` (empty string) is **not** the same as unset.
 > drizzle-kit's turso dialect rejects an empty token with a confusing
@@ -333,7 +347,8 @@ npm run build                # production build (needs a seeded database)
 npm run start                # serve the production build
 npm run typecheck            # tsc --noEmit
 
-npm run db:migrate           # apply committed migrations (use in production)
+npm run db:migrate           # apply committed migrations (use everywhere)
+npm run db:baseline          # adopt a push-created database into migration tracking
 npm run db:push              # apply schema directly — dev only, no history
 npm run db:generate          # write a migration from schema.ts
 npm run db:studio            # browse the database
