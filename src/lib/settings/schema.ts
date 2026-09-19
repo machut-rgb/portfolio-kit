@@ -14,6 +14,33 @@ import type { L } from "@/lib/i18n/localize";
 // Without it, Zod infers the raw union and every consumer needs a cast.
 const localized: z.ZodType<L> = z.union([z.string(), z.record(z.string(), z.string())]);
 
+/**
+ * Contact-form delivery. Choices live here; secrets do not.
+ *
+ * Provider, recipient and throttling are ordinary configuration an owner
+ * should be able to change without a deploy. SMTP passwords, API keys and
+ * webhook URLs stay in environment variables: putting them in a database
+ * the application can read weakens exactly what they protect, and a leaked
+ * settings row should not also leak the mail account.
+ */
+export const mailSettingsSchema = z.object({
+  provider: z.enum(["console", "smtp", "resend", "webhook"]),
+  /** Where submissions are delivered. Blank falls back to MAIL_TO. */
+  recipient: z.string(),
+  /** Submissions allowed per IP per window. */
+  rateLimit: z.number().int().min(1).max(100),
+  rateWindowSeconds: z.number().int().min(60).max(86400),
+});
+
+export type MailSettingsData = z.infer<typeof mailSettingsSchema>;
+
+export const defaultMailSettings: MailSettingsData = {
+  provider: "console",
+  recipient: "",
+  rateLimit: 5,
+  rateWindowSeconds: 3600,
+};
+
 export const siteSettingsSchema = z.object({
   name: z.string().min(1),
   shortName: z.string().min(1),
@@ -24,6 +51,7 @@ export const siteSettingsSchema = z.object({
   /** Upload URL, or null for none. Defaulted so settings rows written
    *  before this field existed still validate. */
   faviconSrc: z.string().nullable().default(null),
+  mail: mailSettingsSchema.default(defaultMailSettings),
   features: z.object({
     projectPages: z.boolean(),
     resume: z.boolean(),

@@ -10,6 +10,11 @@ export interface MailProvider {
   send(payload: ContactPayload): Promise<MailResult>;
 }
 
+/** Recipient chosen in the admin, falling back to the environment. */
+function recipientFor(payload: ContactPayload): string {
+  return payload.recipient?.trim() || process.env.MAIL_TO?.trim() || "";
+}
+
 function subjectLine(payload: ContactPayload) {
   return payload.subject ? `[Portfolio] ${payload.subject}` : `[Portfolio] New message from ${payload.name}`;
 }
@@ -60,7 +65,7 @@ export const smtpProvider: MailProvider = {
     try {
       await transporter.sendMail({
         from: process.env.MAIL_FROM || `"Portfolio" <${user}>`,
-        to: process.env.MAIL_TO || user,
+        to: recipientFor(payload) || user,
         replyTo: payload.email,
         subject: subjectLine(payload),
         html: htmlBody(payload),
@@ -76,8 +81,8 @@ export const resendProvider: MailProvider = {
   async send(payload) {
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) return { ok: false, error: "RESEND_API_KEY is not set." };
-    const to = process.env.MAIL_TO;
-    if (!to) return { ok: false, error: "MAIL_TO is not set." };
+    const to = recipientFor(payload);
+    if (!to) return { ok: false, error: "No recipient address is configured." };
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
@@ -112,8 +117,10 @@ export const webhookProvider: MailProvider = {
   },
 };
 
-export function resolveProvider(): MailProvider {
-  switch (process.env.MAIL_PROVIDER) {
+export type ProviderId = "console" | "smtp" | "resend" | "webhook";
+
+export function resolveProvider(provider: ProviderId): MailProvider {
+  switch (provider) {
     case "smtp":
       return smtpProvider;
     case "resend":
@@ -123,4 +130,22 @@ export function resolveProvider(): MailProvider {
     default:
       return consoleProvider;
   }
+}
+
+/**
+ * Whether a provider has the environment variables it needs.
+ *
+ * Reports only which names are missing, never their values, so the admin
+ * can diagnose a misconfiguration without the page ever rendering a
+ * credential.
+ */
+export function providerReadiness(provider: ProviderId): { ready: boolean; missing: string[] } {
+  const required: Record<ProviderId, string[]> = {
+    console: [],
+    smtp: ["SMTP_HOST", "SMTP_USER", "SMTP_PASS"],
+    resend: ["RESEND_API_KEY"],
+    webhook: ["CONTACT_WEBHOOK_URL"],
+  };
+  const missing = required[provider].filter((name) => !process.env[name]?.trim());
+  return { ready: missing.length === 0, missing };
 }

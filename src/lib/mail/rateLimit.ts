@@ -16,9 +16,9 @@ import { rateLimits } from "@/lib/db/schema";
  */
 export async function checkRateLimit(
   key: string,
+  options: { limit: number; windowSeconds: number },
 ): Promise<{ allowed: boolean; retryAfterSeconds?: number }> {
-  const limit = Number(process.env.CONTACT_RATE_LIMIT || 5);
-  const windowSeconds = Number(process.env.CONTACT_RATE_WINDOW_SECONDS || 3600);
+  const { limit, windowSeconds } = options;
   const windowMs = windowSeconds * 1000;
   const now = Date.now();
 

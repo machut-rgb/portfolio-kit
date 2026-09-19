@@ -23,6 +23,7 @@ const NAV_GROUPS: { label: string; items: { label: string; icon: string; href?: 
     label: "Site",
     items: [
       { label: "Settings", icon: "globe", href: "/settings" },
+      { label: "Contact form", icon: "mail", href: "/mail" },
       { label: "Sections & layout", icon: "menu", href: "/sections" },
       { label: "Theme", icon: "palette", href: "/theme" },
     ],

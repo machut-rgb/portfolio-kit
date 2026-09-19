@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { resolveProvider } from "@/lib/mail/providers";
+import { getSiteSettings } from "@/lib/settings";
 import { checkRateLimit } from "@/lib/mail/rateLimit";
 import { locales } from "@/lib/i18n/config";
 
@@ -46,8 +47,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true });
   }
 
+  const { mail } = await getSiteSettings();
+
   const key = `contact:${clientKey(req)}`;
-  const rate = await checkRateLimit(key);
+  const rate = await checkRateLimit(key, {
+    limit: mail.rateLimit,
+    windowSeconds: mail.rateWindowSeconds,
+  });
   if (!rate.allowed) {
     return NextResponse.json(
       { success: false, error: "rate_limited", retryAfterSeconds: rate.retryAfterSeconds },
@@ -55,8 +61,12 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const provider = resolveProvider();
-  const result = await provider.send({ ...parsed.data, locale: parsed.data.locale ?? "en" });
+  const provider = resolveProvider(mail.provider);
+  const result = await provider.send({
+    ...parsed.data,
+    locale: parsed.data.locale ?? "en",
+    recipient: mail.recipient,
+  });
 
   if (!result.ok) {
     console.error("[contact] provider error:", result.error);

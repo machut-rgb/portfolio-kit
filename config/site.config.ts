@@ -14,6 +14,12 @@ export interface SiteConfig {
   repository: string | null;
   /** Path to an uploaded favicon, or null to use no icon. */
   faviconSrc: string | null;
+  mail: {
+    provider: "console" | "smtp" | "resend" | "webhook";
+    recipient: string;
+    rateLimit: number;
+    rateWindowSeconds: number;
+  };
   features: {
     projectPages: boolean;
     resume: boolean;
@@ -43,6 +49,13 @@ export const siteConfig: SiteConfig = {
   defaultLocale: "en",
   repository: "https://gitlab.com/emachut",
   faviconSrc: null,
+  // Seeded from the environment on first run, then editable in the admin.
+  mail: {
+    provider: (process.env.MAIL_PROVIDER as "console" | "smtp" | "resend" | "webhook") || "console",
+    recipient: process.env.MAIL_TO || "",
+    rateLimit: Number(process.env.CONTACT_RATE_LIMIT || 5),
+    rateWindowSeconds: Number(process.env.CONTACT_RATE_WINDOW_SECONDS || 3600),
+  },
   features: {
     projectPages: true,
     resume: true,

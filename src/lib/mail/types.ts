@@ -6,6 +6,8 @@ export interface ContactPayload {
   /** Honeypot field — must arrive empty. Named oddly on purpose. */
   company?: string;
   locale: string;
+  /** Resolved from settings by the caller, so providers do no lookups. */
+  recipient?: string;
 }
 
 export interface MailResult {
