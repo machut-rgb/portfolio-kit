@@ -12,6 +12,8 @@ export interface SiteConfig {
   defaultLocale: Locale;
   /** Repository link shown in the footer. Set to null to hide it. */
   repository: string | null;
+  /** Path to an uploaded favicon, or null to use no icon. */
+  faviconSrc: string | null;
   features: {
     projectPages: boolean;
     resume: boolean;
@@ -40,6 +42,7 @@ export const siteConfig: SiteConfig = {
   ],
   defaultLocale: "en",
   repository: "https://gitlab.com/emachut",
+  faviconSrc: null,
   features: {
     projectPages: true,
     resume: true,

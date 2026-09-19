@@ -3,6 +3,8 @@
 import { siteSettings } from "@/lib/db/schema";
 import { saveSingleton } from "@/lib/db/singleton";
 import { withAdminMutation } from "@/lib/admin/mutation";
+import { describeStorageError, fileFromForm, storeImage } from "@/lib/media/storage";
+import { getSiteSettings } from "@/lib/settings";
 import { parseBoolean, parseLocalized, parseList, parseString } from "@/lib/admin/formData";
 import { siteSettingsSchema } from "@/lib/settings/schema";
 import type { FormActionState } from "@/components/admin/forms/AdminForm";
@@ -14,6 +16,20 @@ export async function updateSiteSettingsAction(
 ): Promise<FormActionState> {
   const repository = parseString(formData, "repository");
 
+  let faviconSrc: string | null;
+  try {
+    const upload = await storeImage(fileFromForm(formData, "favicon"));
+    if (upload.error) return { error: upload.error };
+    const current = await getSiteSettings();
+    faviconSrc = upload.stored
+      ? upload.stored.url
+      : parseBoolean(formData, "faviconRemove")
+        ? null
+        : (current.faviconSrc ?? null);
+  } catch (err) {
+    return { error: describeStorageError(err) };
+  }
+
   const data = {
     name: parseString(formData, "name"),
     shortName: parseString(formData, "shortName"),
@@ -21,6 +37,7 @@ export async function updateSiteSettingsAction(
     keywords: parseList(formData, "keywords"),
     defaultLocale: parseString(formData, "defaultLocale") || defaultLocale,
     repository: repository || null,
+    faviconSrc,
     features: {
       projectPages: parseBoolean(formData, "features.projectPages"),
       resume: parseBoolean(formData, "features.resume"),

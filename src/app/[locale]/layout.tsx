@@ -58,6 +58,9 @@ export async function generateMetadata({
       description,
     },
     robots: { index: true, follow: true },
+    ...(siteConfig.faviconSrc
+      ? { icons: { icon: siteConfig.faviconSrc, shortcut: siteConfig.faviconSrc, apple: siteConfig.faviconSrc } }
+      : {}),
   };
 }
 

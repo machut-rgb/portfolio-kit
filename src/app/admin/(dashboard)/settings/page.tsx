@@ -2,6 +2,7 @@ import { getSiteSettings } from "@/lib/settings";
 import { AdminForm } from "@/components/admin/forms/AdminForm";
 import { LocalizedField } from "@/components/admin/forms/LocalizedField";
 import { CheckboxField, SelectField, TextField } from "@/components/admin/forms/Fields";
+import { ImageField } from "@/components/admin/forms/ImageField";
 import { localizedDefaults } from "@/lib/admin/formData";
 import { locales, localeNames } from "@/lib/i18n/config";
 import { updateSiteSettingsAction } from "./actions";
@@ -46,6 +47,14 @@ export default async function SiteSettingsPage() {
             options={locales.map((l) => ({ value: l, label: localeNames[l] }))}
           />
         </div>
+
+        <div className="hairline my-2" />
+        <ImageField
+          name="favicon"
+          label="Favicon"
+          currentUrl={settings.faviconSrc}
+          hint="The small icon in browser tabs. A square image works best, 512 x 512 or larger."
+        />
 
         <div className="hairline my-2" />
         <div className="eyebrow -mb-1">Features</div>

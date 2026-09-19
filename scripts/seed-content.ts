@@ -245,6 +245,7 @@ async function main() {
       keywords: siteConfig.keywords,
       defaultLocale: siteConfig.defaultLocale,
       repository: siteConfig.repository,
+      faviconSrc: siteConfig.faviconSrc,
       features: siteConfig.features,
     },
   });

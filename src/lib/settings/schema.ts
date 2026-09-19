@@ -21,6 +21,9 @@ export const siteSettingsSchema = z.object({
   keywords: z.array(z.string()),
   defaultLocale: z.enum(locales as unknown as [string, ...string[]]),
   repository: z.string().nullable(),
+  /** Upload URL, or null for none. Defaulted so settings rows written
+   *  before this field existed still validate. */
+  faviconSrc: z.string().nullable().default(null),
   features: z.object({
     projectPages: z.boolean(),
     resume: z.boolean(),
