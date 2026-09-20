@@ -6,6 +6,7 @@ import { getFullName } from "@/lib/content";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { ModeToggle } from "./ModeToggle";
 import { MobileMenu } from "./MobileMenu";
+import { NavLinks } from "./NavLinks";
 import { ThemeStudioTrigger } from "@/components/studio/ThemeStudioTrigger";
 import { isStudioEnabled } from "@/lib/theme/studio-visibility";
 import { getNavSections, getSiteSettings, getThemeSettings } from "@/lib/settings";
@@ -15,6 +16,7 @@ export async function Nav({ locale }: { locale: Locale }) {
   const siteConfig = await getSiteSettings();
   const themeConfig = await getThemeSettings();
   const items = (await getNavSections()).map((s) => ({
+    id: s.id,
     href: `/${locale}#${s.id}`,
     label: s.navLabel ? t(s.navLabel, locale) : dict.nav[s.id as keyof typeof dict.nav] ?? s.id,
   }));
@@ -43,19 +45,7 @@ export async function Nav({ locale }: { locale: Locale }) {
           {name.split(" ")[0]?.toLowerCase()}.dev
         </Link>
 
-        <ul className="hidden md:flex items-center gap-7">
-          {items.map((item) => (
-            <li key={item.href}>
-              <Link
-                href={item.href}
-                className="text-xs uppercase tracking-[var(--p-tracking-label)] transition-colors"
-                style={{ color: "var(--p-fg-muted)" }}
-              >
-                {item.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <NavLinks items={items} homeHref={`/${locale}`} />
 
         <div className="flex items-center gap-2">
           {siteConfig.features.localeSwitcher && (

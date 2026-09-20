@@ -10,11 +10,12 @@ export function MobileMenu({
   openLabel,
   closeLabel,
 }: {
-  items: { href: string; label: string }[];
+  items: { id: string; href: string; label: string }[];
   openLabel: string;
   closeLabel: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -46,11 +47,23 @@ export function MobileMenu({
             <Link
               key={item.href}
               href={item.href}
-              onClick={() => setOpen(false)}
-              className="py-3 text-lg border-b"
-              style={{ borderColor: "var(--p-border)", color: "var(--p-fg)" }}
+              onClick={() => {
+                setOpen(false);
+                setActive(item.id);
+              }}
+              aria-current={active === item.id ? "true" : undefined}
+              className="py-3 text-lg border-b flex items-center justify-between"
+              style={{
+                borderColor: "var(--p-border)",
+                color: active === item.id ? "var(--p-primary)" : "var(--p-fg)",
+              }}
             >
               {item.label}
+              {active === item.id && (
+                <span aria-hidden="true" className="text-sm">
+                  &bull;
+                </span>
+              )}
             </Link>
           ))}
         </div>
