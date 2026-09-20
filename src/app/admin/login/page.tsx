@@ -1,9 +1,12 @@
 import { getSession } from "@/lib/auth/session";
+import { hasAdminAccount } from "@/lib/auth/setup";
 import { redirect } from "next/navigation";
 import { adminHref } from "@/lib/auth/config";
 import { LoginForm } from "./LoginForm";
 
 export default async function LoginPage() {
+  if (!(await hasAdminAccount())) redirect(adminHref("/setup"));
+
   const session = await getSession();
   if (session) redirect(adminHref());
 

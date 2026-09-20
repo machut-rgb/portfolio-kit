@@ -19,9 +19,19 @@ Drizzle ORM · libSQL/Turso · Zod
 npm install
 cp .env.example .env       # set ADMIN_PATH at minimum
 npm run db:migrate         # creates ./local.db — no account, no setup
-npm run seed-content       # loads /content into the database
-npm run create-admin       # prompts for your admin email + password
 npm run dev                # http://localhost:3000
+```
+
+Then open your `ADMIN_PATH` in a browser. With no account yet, it opens a
+setup wizard: create your login, enter your name and role, pick a theme.
+Nothing else is required, and the site renders with placeholders in the
+meantime.
+
+Two optional commands remain for people who prefer a terminal:
+
+```bash
+npm run seed-content       # load the example content in /content as a starting point
+npm run create-admin       # create the account from the CLI instead of the wizard
 ```
 
 Your admin panel is at `http://localhost:3000` + whatever `ADMIN_PATH` you

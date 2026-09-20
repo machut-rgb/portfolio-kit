@@ -126,7 +126,7 @@ export const siteContentSchema = z.object({
   stats: z.array(statSchema),
   experience: z.array(experienceSchema),
   education: z.array(educationSchema),
-  projects: z.array(projectSchema).min(1),
+  projects: z.array(projectSchema),
   skills: z.array(skillGroupSchema),
   certifications: z.array(certificationSchema),
   social: z.array(socialSchema),

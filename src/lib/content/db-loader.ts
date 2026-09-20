@@ -69,17 +69,16 @@ export async function loadContentFromDb(): Promise<SiteContent> {
     db.query.contactChannels.findMany({ orderBy: [asc(contactChannels.position)] }),
   ]);
 
-  if (!profileRow) {
-    throw new Error(
-      "No profile row found. Run `npm run seed-content` to migrate /content into the database.",
-    );
-  }
-  if (!aboutRow) throw new Error("No about row found — run `npm run seed-content`.");
-  if (!contactRow) throw new Error("No contact row found — run `npm run seed-content`.");
-
+  // A migrated-but-unseeded database is a legitimate state: it is what a
+  // fresh install looks like before the setup wizard runs. Throwing here
+  // made the build fail and left no way in, so the singletons fall back to
+  // neutral placeholders instead. Collections deliberately do not fall
+  // back: an owner who deletes every project means it.
   return {
-    profile: rowToProfile(profileRow),
-    about: { paragraphs: aboutRow.paragraphs, quote: aboutRow.quote ?? undefined },
+    profile: profileRow ? rowToProfile(profileRow) : PLACEHOLDER_PROFILE,
+    about: aboutRow
+      ? { paragraphs: aboutRow.paragraphs, quote: aboutRow.quote ?? undefined }
+      : PLACEHOLDER_ABOUT,
     stats: statsRows.map(rowToStat),
     experience: experienceRows.map(rowToExperience),
     education: educationRows.map(rowToEducation),
@@ -88,12 +87,41 @@ export async function loadContentFromDb(): Promise<SiteContent> {
     certifications: certificationRows.map(rowToCertification),
     social: socialRows.map(rowToSocialLink),
     contact: {
-      heading: contactRow.heading,
-      body: contactRow.body,
+      heading: contactRow?.heading ?? PLACEHOLDER_CONTACT.heading,
+      body: contactRow?.body ?? PLACEHOLDER_CONTACT.body,
       channels: contactChannelRows.map(rowToContactChannel),
     },
   };
 }
+
+/**
+ * Shown only between `db:migrate` and the setup wizard being completed.
+ * Deliberately generic rather than the seed content, so a fork never
+ * publishes someone else's name while waiting to be configured.
+ */
+const PLACEHOLDER_PROFILE: Profile = {
+  firstName: "Your",
+  lastName: "Name",
+  handle: "~/your.site",
+  headline: "This site has not been set up yet.",
+  roles: ["Set your role in the admin panel"],
+  summary: "Sign in to the admin panel to replace this placeholder with your own details.",
+  availability: "Not set up yet",
+  location: "Not set up yet",
+  // A reserved TLD that can never resolve, so the placeholder cannot leak a
+  // working address or be scraped into a real mailing list.
+  email: "setup@example.invalid",
+};
+
+const PLACEHOLDER_ABOUT = {
+  paragraphs: ["Add your bio from the admin panel."],
+  quote: undefined,
+};
+
+const PLACEHOLDER_CONTACT = {
+  heading: "Get in touch",
+  body: "Add your contact text from the admin panel.",
+};
 
 function photoFrom(
   src: string | null,
